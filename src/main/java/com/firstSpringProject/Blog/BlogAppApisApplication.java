@@ -12,6 +12,7 @@ public class BlogAppApisApplication {
 		SpringApplication.run(BlogAppApisApplication.class, args);
 	}
 	
+// Bean Annotation Used
 	@Bean
 	public  ModelMapper modelMapper() {
 		return new ModelMapper();
