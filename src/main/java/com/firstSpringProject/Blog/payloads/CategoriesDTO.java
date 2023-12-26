@@ -1,6 +1,6 @@
 package com.firstSpringProject.Blog.payloads;
 
-public class CategoriesDTO {
+public class CategoriesDTO extends RequestResponseDTO {
 	
 	private int categoryId;
 	private String categoryTitle;
@@ -13,6 +13,10 @@ public class CategoriesDTO {
 	}
 	public int getCategoryId() {
 		return categoryId;
+	}
+	public CategoriesDTO() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;

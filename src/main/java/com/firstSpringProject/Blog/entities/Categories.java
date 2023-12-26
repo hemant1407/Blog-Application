@@ -20,6 +20,10 @@ public class Categories {
 	@Column(name="categoryTitle")
 	private String categoryTitle;
 	
+	public Categories() {
+		super();
+	}
+
 	@Column(name="categoryDiscription")
 	private String categoryDiscription;
 
