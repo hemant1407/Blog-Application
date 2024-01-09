@@ -1,5 +1,6 @@
 package com.firstSpringProject.Blog.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,11 +57,12 @@ public class PostService{
 		
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
-		TypeMap<PostDTO, PostTbl> typeMap = modelMapper.createTypeMap(postDTO, PostTbl.class);
-		typeMap.addMappings(modelMapper-> modelMapper.skip(PostTbl::setPostId));
-		typeMap.addMappings(modelMapper-> modelMapper.skip(PostTbl::setAddedDate));
-		
-		PostTbl postTbl = modelMapper.map(postDTO, PostTbl.class);
+//		TypeMap<PostDTO, PostTbl> typeMap = modelMapper.createTypeMap(postDTO, PostTbl.class);
+////		typeMap.addMappings(modelMapper-> modelMapper.skip(PostTbl::setPostId));
+//		if(typeMap==null) {
+//			modelMapper.addMappings(modelMapper-> modelMapper.skip(PostTbl::setAddedDate));			
+//		}
+		PostTbl postTbl = modelMapper.map(postDTO,PostTbl.class);
 		postTbl.setAddedDate(new Date());
 		postTbl.setUser(user);
 		postTbl.setCategory(categories);
@@ -93,8 +95,8 @@ public class PostService{
 	}
 
 
-	public void deletePost(PostDTO postDTO, int postId) {
-		PostTbl postTbl = postRepo.findById(postId).orElse(null);
+	public void deletePost(PostDTO postDTO) {
+		PostTbl postTbl = postRepo.findById(postDTO.getPostId()).orElse(null);
 		if(postTbl!=null) {
 			postRepo.delete(postTbl);
 			postDTO.setMessage("Deleted Successfully");
@@ -103,9 +105,43 @@ public class PostService{
 	}
 
 
-	public void getAllPost(PostDTO postDTO) {
+	public List<PostDTO> getAllPost(PostDTO postDTO) {
 		List<PostTbl> postTbls = postRepo.findAll();
+		List<PostDTO> postDTOs = new ArrayList<>();
+		for(PostTbl postTbl:postTbls) {
+			PostDTO postDTOToAdd = modelMapper.map(postTbl, PostDTO.class);
+			postDTOs.add(postDTOToAdd);
+		}
+		return postDTOs;
 		
+	}
+
+
+	public List<PostDTO> getAllPostByCategory(PostDTO postDTO) {
+		List<PostDTO> postDTOs = new ArrayList<>();
+		Categories category = categoriesRepo.findById(postDTO.getCategoryId()).orElse(null);
+		List<PostTbl> postTbls = postRepo.findByCategory(category);
+		if(postTbls!=null && postTbls.size()>0) {
+			for(PostTbl postTbl:postTbls) {
+				PostDTO postDTOToAdd = modelMapper.map(postTbl, PostDTO.class);
+				postDTOs.add(postDTOToAdd);
+			}
+		}
+		return postDTOs;
+	}
+
+
+	public List<PostDTO> getAllPostByUser(PostDTO postDTO) {
+		List<PostDTO> postDTOs = new ArrayList<>();
+		User user = userRepo.findById(postDTO.getUserId()).orElse(null);
+		List<PostTbl> postTbls = postRepo.findByUser(user);
+		if(postTbls!=null && postTbls.size()>0) {
+			for(PostTbl postTbl:postTbls) {
+				PostDTO postDTOToAdd = modelMapper.map(postTbl, PostDTO.class);
+				postDTOs.add(postDTOToAdd);
+			}
+		}
+		return postDTOs;
 	}
 	
 	

@@ -1,5 +1,7 @@
 package com.firstSpringProject.Blog.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,26 +30,24 @@ public class PostController {
 	}
 	
 	@PostMapping("/deletePost")
-	public RequestResponseDTO deletePost(@RequestBody PostDTO postDTO, @RequestParam int postId) {
-		postService.deletePost(postDTO,postId);
+	public RequestResponseDTO deletePost(@RequestBody PostDTO postDTO) {
+		postService.deletePost(postDTO);
 		return postDTO;
 	}
 	
 	@PostMapping("/getAllPost")
-	public RequestResponseDTO getAllPost(@RequestBody PostDTO postDTO) {
-		postService.getAllPost(postDTO);
-		return postDTO;
+	public List<PostDTO> getAllPost(@RequestBody PostDTO postDTO) {
+		return postService.getAllPost(postDTO);
 	}
 	
 	@PostMapping("/getAllPostByCategory")
-	public RequestResponseDTO createPost(@RequestBody PostDTO postDTO) {
-		postService.createPost(postDTO);
-		return postDTO;
+	public List<PostDTO> getAllPostByCategory(@RequestBody PostDTO postDTO) {
+		return postService.getAllPostByCategory(postDTO);
 	}
 	
 	@PostMapping("/getAllPostByUser")
-	public RequestResponseDTO createPost(@RequestBody PostDTO postDTO) {
-		postService.createPost(postDTO);
-		return postDTO;
+	public List<PostDTO> getAllPostByUser(@RequestBody PostDTO postDTO) {
+		return postService.getAllPostByUser(postDTO);
+		
 	}
 }
